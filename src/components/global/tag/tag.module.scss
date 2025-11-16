@@ -1,0 +1,7 @@
+@reference "tailwindcss";
+
+.tag {
+    @apply rounded-lg capitalize px-3 bg-gray-200 border-none;
+    font-size: 12px;
+    font-weight: 400;
+}
