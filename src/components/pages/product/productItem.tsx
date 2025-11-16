@@ -1,0 +1,97 @@
+import MyButton from "@/components/global/button";
+import MyIcon from "@/components/global/icon";
+import MyTag from "@/components/global/tag";
+import { cn, getStrPrice, getStrPriceAfterDiscount } from "@/libs/utils";
+import { Image, Skeleton } from "antd";
+import Link from "next/link";
+import { FC, useState } from "react";
+import styles from "./product.module.scss";
+
+type IProductItem = {
+  item: TProduct;
+}
+
+const MyImageLoading = ({
+  thumbnail,
+  title,
+}: {
+  thumbnail: string;
+  title: string;
+}) => {
+  const [loading, setLoading] = useState(true);
+
+  return (
+    <div className="w-full flex items-center justify-center h-64 relative">
+      {loading ? <Skeleton.Image active className="absolute inset-0 w-full! h-full!" /> : null}
+
+      <Image
+        src={thumbnail}
+        alt={`${title}-${thumbnail}`}
+        preview={false}
+        onLoad={() => setLoading(false)}
+        onError={() => setLoading(false)}
+        className={
+          loading ? "opacity-0 -z-10" : "opacity-100 transition-opacity duration-300"
+        }
+      />
+    </div>
+  );
+};
+
+const ProductItem: FC<IProductItem> = ({ item }) => {
+  const discountPrice = getStrPriceAfterDiscount(
+    item.price,
+    item.discountPercentage
+  );
+  const isDiscount = item.discountPercentage > 0;
+
+  return (
+    <div key={item.id} className={styles["item"]}>
+      <Link href={`/product/${item.id}`}>
+        <MyImageLoading thumbnail={item.thumbnail} title={item.title} />
+        <div className={styles["item-content"]}>
+          <div className={styles["item-info"]}>
+            <MyTag content={item.category} />
+            <div className={styles["item-info-more"]}>
+              <MyIcon name={"star"} size={14} />
+              <div className={styles["item-info-rating"]}>{item.rating}</div>
+              <div className={styles["item-info-review"]}>
+                ({item.reviews.length})
+              </div>
+            </div>
+          </div>
+
+          <div className={styles["item-title"]}>{item.title}</div>
+          <div className={styles["item-description"]}>{item.description}</div>
+          <div className={styles["item-price"]}>
+            {isDiscount && (
+              <div className={styles["item-price-discount"]}>
+                {discountPrice}
+              </div>
+            )}
+            <div
+              className={cn(
+                styles["item-price-original"],
+                isDiscount && "text-gray-500 text-sm line-through"
+              )}
+            >
+              {getStrPrice(item.price)}
+            </div>
+          </div>
+        </div>
+      </Link>
+      <MyButton
+        type="primary"
+        size="large"
+        disabled={item.stock <= 0}
+        onClick={() => {
+          console.log(item.title);
+        }}
+      >
+        <span className="uppercase font-bold text-sm">Add to Card</span>
+      </MyButton>
+    </div>
+  );
+};
+
+export default ProductItem;
