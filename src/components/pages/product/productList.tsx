@@ -1,12 +1,14 @@
 import { productAPI } from "@/api/product";
 import { cn } from "@/libs/utils";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery
+} from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
+import NotFound from "../notFound";
 import styles from "./product.module.scss";
 import ProductItem from "./productItem";
 import ProductItemSkeleton from "./proItemSkeleton";
-import NotFound from "../notFound";
 
 const LIMIT = 20;
 
@@ -16,6 +18,7 @@ const ProductList = () => {
   const limit = +(query.limit as string) || LIMIT;
   const q = (query.q as string) || "";
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   // I need to seperate api because DummyJSON is stupid, damn :)))
   const fetchProducts = ({ pageParam = 0 }) => {
@@ -41,6 +44,8 @@ const ProductList = () => {
         return undefined;
       },
       enabled: router.isReady,
+      refetchOnMount: false,
+      staleTime: Infinity,
     });
 
   useEffect(() => {
@@ -61,13 +66,16 @@ const ProductList = () => {
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (!isLoading && (data?.pages[0]?.data?.total ?? 0) <=0) {
-    return <NotFound title="no result" description=""/>
+  if (!isLoading && (data?.pages[0]?.data?.total ?? 0) <= 0) {
+    return <NotFound title="no result" description="" />;
   }
 
+  const isLoadMore =
+    (data?.pages[0]?.data?.limit ?? 0) + (data?.pages[0]?.data?.skip ?? 0) <
+    (data?.pages[0]?.data?.total ?? 0);
+
   return (
-    <div className={cn(styles.wrapper)}>
-      {/* {!isLoading && !data.} */}
+    <div className={cn(styles.wrapper, "")} ref={containerRef}>
       {isLoading &&
         Array.from({ length: limit }).map((_, i) => (
           <ProductItemSkeleton key={i} />
@@ -84,7 +92,9 @@ const ProductList = () => {
           <ProductItemSkeleton key={i} />
         ))}
 
-      <div ref={sentinelRef} className="h-10"></div>
+      {isLoadMore && router.isReady && (
+        <div ref={sentinelRef} className={"h-20 col-span-full"} />
+      )}
     </div>
   );
 };
