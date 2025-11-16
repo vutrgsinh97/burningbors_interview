@@ -1,0 +1,58 @@
+@reference "tailwindcss";
+
+.wrapper {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
+}
+
+.item {
+    @apply border flex flex-col border-gray-200 rounded-lg hover:shadow-2xl hover:border-white bg-white;
+
+    padding: 12px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+
+    &-info {
+        @apply flex justify-between gap-2 mt-2;
+
+        &-more {
+            @apply flex gap-1;
+        }
+
+        &-rating {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        &-review {
+            @apply text-gray-500;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+
+    &-content {
+        @apply flex flex-col gap-2;
+    }
+
+    &-title {
+        @apply font-bold text-xl line-clamp-2;
+        height: 56px;
+    }
+
+    &-description {
+        @apply text-gray-600 text-sm line-clamp-4;
+        height: 80px;
+    }
+
+    &-price {
+        @apply flex gap-2 font-bold text-lg py-2;
+
+        &-discount {
+            @apply text-xl;
+        }
+
+        &-price {
+
+        }
+    }
+}
