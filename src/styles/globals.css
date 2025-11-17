@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 body {
   width: 100%;
   height: 100%;
@@ -17,4 +16,9 @@ body {
 /* width */
 ::-webkit-scrollbar {
   width: 0px !important;
+}
+
+.filter-white {
+  filter: brightness(0) saturate(100%) invert(99%) sepia(100%) saturate(0%)
+    hue-rotate(335deg) brightness(101%) contrast(101%);
 }

@@ -12,7 +12,7 @@ const ProductDetail: NextPageWithLayout = () => {
 
 ProductDetail.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout>
+    <MainLayout title="">
       <div className="pro_detail">{page}</div>
     </MainLayout>
   );

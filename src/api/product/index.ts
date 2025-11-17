@@ -6,11 +6,11 @@ const url = "/products";
 export const productAPI = {
   keyGetList: `GET ${url}`,
   getList(params: TBaseParam) {
-    return instancePublish.get<ProductsResponse>(`${url}?${queryString.stringify(params)}`);
+    return instancePublish.get<TProductsResponse>(`${url}?${queryString.stringify(params)}`);
   },
 
   keySearch: `GET ${url}`,
   getBySearch(params: TBaseParam) {
-    return instancePublish.get<ProductsResponse>(`${url}/search?${queryString.stringify(params)}`);
+    return instancePublish.get<TProductsResponse>(`${url}/search?${queryString.stringify(params)}`);
   },
 };
