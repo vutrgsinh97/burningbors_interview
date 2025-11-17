@@ -12,6 +12,15 @@ type TBaseParam = {
   q?: string;
 };
 
+type TDummyJWT = {
+  iat: number;
+  exp: number;
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata": string;
+};
 
 // Response for Product
-type ProductsResponse = TRestApiCommon<"products", TProduct[]>;
+type TProductsResponse = TRestApiCommon<"products", TProduct[]>;
+type TLoginResponse = TUser & {
+  accessToken?: string;
+  refreshToken?: string;
+};

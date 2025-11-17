@@ -19,7 +19,7 @@ const ProductPage: NextPageWithLayout = () => {
 };
 
 ProductPage.getLayout = function getLayout(page: ReactElement) {
-  return <MainLayout>{page}</MainLayout>;
+  return <MainLayout title="Products">{page}</MainLayout>;
 };
 
 export default ProductPage;

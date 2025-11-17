@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import type { ReactElement, ReactNode } from "react";
+import { Toaster } from "react-hot-toast";
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout: (page: ReactElement) => ReactNode;
@@ -19,9 +20,13 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <>
       <ReactQueryProvider>
-        {getLayout(<Component {...pageProps} />)}
+        {getLayout(
+          <>
+            <Component {...pageProps} />
+            <Toaster position="top-right" />
+          </>
+        )}
       </ReactQueryProvider>
     </>
   );
 }
-

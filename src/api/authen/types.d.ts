@@ -1,3 +1,8 @@
+type TLoginForm = {
+  username: string;
+  password: string;
+};
+
 type TUser = {
   id: number;
   username: string;
@@ -5,7 +10,5 @@ type TUser = {
   firstName: string;
   lastName: string;
   gender: string;
-  image?: string;
-  accessToken?: string;
-  refreshToken?: string;
+  image: string;
 };
