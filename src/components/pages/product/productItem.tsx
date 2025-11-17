@@ -6,10 +6,12 @@ import { Image, Skeleton } from "antd";
 import Link from "next/link";
 import { FC, useState } from "react";
 import styles from "./product.module.scss";
+import { useLoginToast } from "@/hooks/useShowToastIsLogin";
 
 type IProductItem = {
   item: TProduct;
-}
+  isOrder: boolean;
+};
 
 const MyImageLoading = ({
   thumbnail,
@@ -22,7 +24,9 @@ const MyImageLoading = ({
 
   return (
     <div className="w-full flex items-center justify-center h-64 relative">
-      {loading ? <Skeleton.Image active className="absolute inset-0 w-full! h-full!" /> : null}
+      {loading ? (
+        <Skeleton.Image active className="absolute inset-0 w-full! h-full!" />
+      ) : null}
 
       <Image
         src={thumbnail}
@@ -31,19 +35,22 @@ const MyImageLoading = ({
         onLoad={() => setLoading(false)}
         onError={() => setLoading(false)}
         className={
-          loading ? "opacity-0 -z-10" : "opacity-100 transition-opacity duration-300"
+          loading
+            ? "opacity-0 -z-10"
+            : "opacity-100 transition-opacity duration-300"
         }
       />
     </div>
   );
 };
 
-const ProductItem: FC<IProductItem> = ({ item }) => {
+const ProductItem: FC<IProductItem> = ({ item, isOrder }) => {
   const discountPrice = getStrPriceAfterDiscount(
     item.price,
     item.discountPercentage
   );
   const isDiscount = item.discountPercentage > 0;
+  const showLoginToast = useLoginToast({ message: "Login required to order." });
 
   return (
     <div key={item.id} className={styles["item"]}>
@@ -85,6 +92,10 @@ const ProductItem: FC<IProductItem> = ({ item }) => {
         size="large"
         disabled={item.stock <= 0}
         onClick={() => {
+          if (!isOrder) {
+            showLoginToast();
+            return;
+          }
           console.log(item.title);
         }}
       >

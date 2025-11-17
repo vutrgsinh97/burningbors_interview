@@ -5,12 +5,18 @@ import MyInputSearch from "../inputSearch";
 import { useUserStore } from "@/stores/user";
 import { Avatar } from "antd";
 import useLogout from "@/hooks/useLogout";
+import { useLoginToast } from "@/hooks/useShowToastIsLogin";
+import useIsLogin from "@/hooks/useCheckLogin";
 
 export default function AppHeader() {
   const router = useRouter();
   const { logout } = useLogout();
   const q = (router.query.q as string) || "";
   const user = useUserStore((state) => state.user);
+  const isLogin = useIsLogin();
+  const showLoginToast = useLoginToast({
+    message: "Login required to see cart.",
+  });
 
   const handleSearch = (val: string) => {
     router.replace(
@@ -38,7 +44,18 @@ export default function AppHeader() {
         defaultValue={q}
       />
       <div className="flex gap-2">
-        <MyButton classname="px-1! hover:bg-gray-100!" hiddenBorder>
+        <MyButton
+          classname="px-1! hover:bg-gray-100!"
+          hiddenBorder
+          onClick={() => {
+            if (!isLogin) {
+              showLoginToast();
+              return;
+            }
+
+            console.log("cart");
+          }}
+        >
           <MyIcon name={"bag"} />
         </MyButton>
 

@@ -1,7 +1,7 @@
 import { authAPI } from "@/api/authen";
 import MyButton from "@/components/global/button";
 import MyInputForm from "@/components/global/inputForm";
-import { getJWTDecode, handleSetToken } from "@/libs/utils";
+import { handleSetToken } from "@/libs/utils";
 import { schemaLoginForm } from "@/libs/validation";
 import { useUserStore } from "@/stores/user";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -30,7 +30,7 @@ const LoginForm = () => {
   ) => {
     if (accessToken && refreshToken) {
       try {
-        const userParse = getJWTDecode(accessToken);
+        // const userParse = getJWTDecode(accessToken);
 
         handleSetToken({token: accessToken, refresh: refreshToken})
       } catch (err) {
