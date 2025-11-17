@@ -6,10 +6,12 @@ interface IMyButton {
   children: ReactNode;
   classname?: string;
   hiddenBorder?: boolean;
-  type?: "link" | "text" | "default" | "primary" | "dashed",
-  size?: "small" | "middle" | "large" ,
+  type?: "link" | "text" | "default" | "primary" | "dashed";
+  size?: "small" | "middle" | "large";
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void
+  htmlType?: "button" | "submit" | "reset";
+  loading?: boolean
 }
 
 const MyButton: FC<IMyButton> = ({
@@ -19,14 +21,18 @@ const MyButton: FC<IMyButton> = ({
   type = "default",
   size = "middle",
   disabled = false,
-  onClick
+  onClick,
+  htmlType,
+  loading = false
 }) => {
   return (
     <Button
       type={type}
       size={size}
       disabled={disabled}
-      onClick={onClick && onClick}
+      onClick={onClick}
+      htmlType={htmlType}
+      loading={loading}
       className={cn(hiddenBorder && "border-none! shadow-none!", classname)}
     >
       {children}
