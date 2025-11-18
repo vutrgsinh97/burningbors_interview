@@ -9,6 +9,7 @@ import NotFound from "../notFound";
 import styles from "./product.module.scss";
 import ProductItem from "./productItem";
 import ProductItemSkeleton from "./proItemSkeleton";
+import useIsLogin from "@/hooks/useCheckLogin";
 
 const LIMIT = 20;
 
@@ -18,7 +19,7 @@ const ProductList = () => {
   const limit = +(query.limit as string) || LIMIT;
   const q = (query.q as string) || "";
   const sentinelRef = useRef<HTMLDivElement | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const isLogin = useIsLogin()
 
   // I need to seperate api because DummyJSON is stupid, damn :)))
   const fetchProducts = ({ pageParam = 0 }) => {
@@ -75,7 +76,7 @@ const ProductList = () => {
     (data?.pages[0]?.data?.total ?? 0);
 
   return (
-    <div className={cn(styles.wrapper, "")} ref={containerRef}>
+    <div className={cn(styles.wrapper, "")}>
       {isLoading &&
         Array.from({ length: limit }).map((_, i) => (
           <ProductItemSkeleton key={i} />
@@ -83,7 +84,7 @@ const ProductList = () => {
 
       {data?.pages.map((page, pageIndex) =>
         page.data.products.map((item: TProduct) => (
-          <ProductItem key={`${pageIndex}-${item.id}`} item={item} />
+          <ProductItem key={`${pageIndex}-${item.id}`} item={item} isOrder={isLogin}/>
         ))
       )}
 

@@ -11,7 +11,8 @@ interface IMyButton {
   disabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void
   htmlType?: "button" | "submit" | "reset";
-  loading?: boolean
+  loading?: boolean;
+  danger?: boolean;
 }
 
 const MyButton: FC<IMyButton> = ({
@@ -23,7 +24,8 @@ const MyButton: FC<IMyButton> = ({
   disabled = false,
   onClick,
   htmlType,
-  loading = false
+  loading = false,
+  danger = false
 }) => {
   return (
     <Button
@@ -33,6 +35,7 @@ const MyButton: FC<IMyButton> = ({
       onClick={onClick}
       htmlType={htmlType}
       loading={loading}
+      danger={danger}
       className={cn(hiddenBorder && "border-none! shadow-none!", classname)}
     >
       {children}
