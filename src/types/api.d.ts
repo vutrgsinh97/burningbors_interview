@@ -24,3 +24,4 @@ type TLoginResponse = TUser & {
   accessToken?: string;
   refreshToken?: string;
 };
+type TCartResponse = TRestApiCommon<"carts", TCart[]>;

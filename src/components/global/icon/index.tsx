@@ -2,7 +2,7 @@ import { cn } from "@/libs/utils";
 import { Image } from "antd";
 import { FC } from "react";
 
-type IName = "bag" | "user" | "star" | "eye" | "logout";
+type IName = "bag" | "user" | "star" | "eye" | "logout" | "total" | "totalDiscount" | "package" | "trashFilled" | "plus" | "minus";
 
 interface IMyIcon {
   name: IName;
@@ -18,7 +18,13 @@ const iconsMap: Record<IMyIcon["name"], string> = {
   user: "icons/user-square-rounded.png",
   star: "icons/star.png",
   eye: "icons/eye.png",
-  logout: "icons/logout.png"
+  logout: "icons/logout.png",
+  total: "icons/total.png",
+  totalDiscount: "icons/total-discount.png",
+  package: "icons/package.png",
+  trashFilled: "icons/trash_filled.png",
+  plus: "icons/plus.png",
+  minus: "icons/minus.png"
 };
 
 const MyIcon: FC<IMyIcon> = ({

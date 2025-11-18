@@ -1,4 +1,5 @@
 import MyButton from "@/components/global/button";
+import { staticURL } from "@/configs/app";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 
@@ -17,7 +18,7 @@ export const useLoginToast= ({ message = "" }: ILoginToastProps) => {
           <MyButton
             type="primary"
             onClick={() => {
-                router.push("/login");
+                router.push(staticURL.login);
                 toast.dismissAll();
             }}
           >
