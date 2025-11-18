@@ -46,7 +46,7 @@ const CartProductItemQuantity: FC<TDeleteProductItem> = ({
           ?.reduce((prev, curr) => (prev += curr.discountedTotal), 0)
           .toFixed(2)
       ),
-      totalProducts: (cartTarget?.products.length ?? 0) - 1,
+      totalProducts: cartTarget?.products.length ? 1 : (cartTarget?.products.length ?? 0) - 1,
       totalQuantity: newQuantity,
       products: newProductInCartTarget,
     } as TCart;
