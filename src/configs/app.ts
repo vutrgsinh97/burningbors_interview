@@ -9,3 +9,10 @@ export const apiConfig = {
   ACCESS_TOKEN_KEY: appConfig.ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY: appConfig.REFRESH_TOKEN_KEY,
 };
+
+export const staticURL = {
+  login: "/login",
+  product: "/product?limit=20&q=",
+  cart: "/cart",
+  checkout: "/checkout",
+};

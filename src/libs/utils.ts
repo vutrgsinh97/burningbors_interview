@@ -40,6 +40,19 @@ export function getStrPriceAfterDiscount(
   return `$${formatPrice}`;
 }
 
+export function getNumPriceAfterDiscount(
+  price: number,
+  discountPercent: number,
+  digit: number = 2
+): number {
+  if (!price) return 0;
+  if (discountPercent <= 0) return 0;
+
+  const calPrice = price - (price * discountPercent) / 100;
+
+  return Number(calPrice.toFixed(digit))
+}
+
 export function handleGetRefreshToken() {
   return Cookies.get(appConfig.REFRESH_TOKEN_KEY);
 }

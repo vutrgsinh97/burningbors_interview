@@ -1,3 +1,4 @@
+import { staticURL } from "@/configs/app";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -6,7 +7,7 @@ export default function Home() {
 
   useEffect(() => {
     if (router.asPath.includes("")) {
-      router.push("/product?limit=20&q=");
+      router.push(staticURL.product);
     }
   }, [router]);
 

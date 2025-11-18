@@ -1,5 +1,6 @@
 import BlankLayout from "@/components/layouts/BlankLayout";
 import LoginForm from "@/components/pages/login/loginForm";
+import { staticURL } from "@/configs/app";
 import { useUserStore } from "@/stores/user";
 import { Image } from "antd";
 import { useRouter } from "next/router";
@@ -10,7 +11,7 @@ const LoginPage: NextPageWithLayout = () => {
   const user = useUserStore(state => state.user);
 
   if (user) {
-    router.push("/product");
+    router.push(staticURL.product);
     return
   }
 

@@ -1,8 +1,11 @@
 import { authAPI } from "@/api/authen";
+import { cartAPI } from "@/api/cart";
 import MyButton from "@/components/global/button";
 import MyInputForm from "@/components/global/inputForm";
-import { getJWTDecode, handleSetToken } from "@/libs/utils";
+import { staticURL } from "@/configs/app";
+import { handleSetToken } from "@/libs/utils";
 import { schemaLoginForm } from "@/libs/validation";
+import { useCartStore } from "@/stores/carts";
 import { useUserStore } from "@/stores/user";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
@@ -13,6 +16,7 @@ import toast from "react-hot-toast";
 const LoginForm = () => {
   const updateUser = useUserStore((state) => state.updateUser);
   const router = useRouter();
+  const updateCart = useCartStore((state) => state.updateAllCarts);
 
   const { control, handleSubmit } = useForm<TLoginForm>({
     mode: "onBlur",
@@ -23,6 +27,19 @@ const LoginForm = () => {
     resolver: yupResolver(schemaLoginForm),
   });
 
+  const handleFetchingCart = async (userId: number) => {
+    try {
+      const res = await cartAPI.getCartByUser(userId);
+      const data = res.data.carts;
+
+      if (res.data.total > 0) {
+        updateCart(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleAfterLogin = (
     accessToken: string,
     refreshToken: string,
@@ -30,17 +47,18 @@ const LoginForm = () => {
   ) => {
     if (accessToken && refreshToken) {
       try {
-        const userParse = getJWTDecode(accessToken);
+        // const userParse = getJWTDecode(accessToken);
 
-        handleSetToken({token: accessToken, refresh: refreshToken})
+        handleSetToken({ token: accessToken, refresh: refreshToken });
       } catch (err) {
-        console.error("Failed to decode JWT user data", err);
+        toast.error("Failed to decode JWT user data");
       }
     }
 
-    if (user) {
+    if (user?.id) {
       updateUser(user);
-      router.push("/product?limit=20&q=")
+      router.push(staticURL.product);
+      handleFetchingCart(user.id);
     }
   };
 
@@ -52,8 +70,8 @@ const LoginForm = () => {
       handleAfterLogin(accessToken || "", refreshToken || "", user || null);
     },
     onError: (error) => {
-        toast.error(error.message)
-    }
+      toast.error(error.message);
+    },
   });
 
   const handleLogin = (data: TLoginForm) => {
