@@ -3,7 +3,7 @@ import { Input } from "antd";
 import { HTMLInputTypeAttribute } from "react";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 
-interface IMyInputForm<T extends FieldValues> {
+interface IMyInputCardExpiryDateForm<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
   label?: string;
@@ -13,11 +13,10 @@ interface IMyInputForm<T extends FieldValues> {
   disabled?: boolean;
   defaultValue?: string;
   size?: "small" | "middle" | "large";
-  inputType?: "base" | "password";
   classname?: string
 }
 
-const MyInputForm = <T extends FieldValues>({
+const MyInputCardExpiryDateForm = <T extends FieldValues>({
   control,
   name,
   label,
@@ -27,9 +26,8 @@ const MyInputForm = <T extends FieldValues>({
   disabled = false,
   defaultValue,
   size = "middle",
-  inputType = "base",
   classname = ""
-}: IMyInputForm<T>) => {
+}: IMyInputCardExpiryDateForm<T>) => {
   return (
     <Controller
       control={control}
@@ -43,34 +41,31 @@ const MyInputForm = <T extends FieldValues>({
             </label>
           )}
           <div className="">
-            {inputType === "base" && (
-              <Input
-                value={value}
-                placeholder={placeholder}
-                defaultValue={defaultValue}
-                onChange={onChange}
-                disabled={disabled}
-                type={type}
-                id={name}
-                name={name}
-                size={size}
-                className="bg-gray-50! border-2! border-gray-200! rounded-lg!"
-              />
-            )}
-            {inputType === "password" && (
-              <Input.Password
-                value={value}
-                placeholder={placeholder}
-                defaultValue={defaultValue}
-                onChange={onChange}
-                disabled={disabled}
-                type={type}
-                id={name}
-                name={name}
-                size={size}
-                className="bg-gray-50! border-2! border-gray-200! rounded-lg!"
-              />
-            )}
+            <Input
+              value={value}
+              placeholder={placeholder}
+              defaultValue={defaultValue}
+              maxLength={5}
+              onChange={(e) => {
+                let val = e.target.value.replace(/\D/g, "");
+                if (val.length > 4) val = val.slice(0, 4);
+
+                let month = val.slice(0, 2);
+                const year = val.slice(2, 4);
+                if (Number(month) > 12) month = "12";
+
+                let formatted = month;
+                if (year) formatted += "/" + year;
+
+                onChange(formatted);
+              }}
+              disabled={disabled}
+              type={type}
+              id={name}
+              name={name}
+              size={size}
+              className="bg-gray-50! border-2! border-gray-200! rounded-lg!"
+            />
           </div>
           <div className="text-sm text-red-500 italic">{error?.message}</div>
         </div>
@@ -79,4 +74,4 @@ const MyInputForm = <T extends FieldValues>({
   );
 };
 
-export default MyInputForm;
+export default MyInputCardExpiryDateForm;
