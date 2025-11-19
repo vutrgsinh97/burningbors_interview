@@ -1,5 +1,6 @@
 import { authAPI } from "@/api/authen";
 import { cartAPI } from "@/api/cart";
+import { userAPI } from "@/api/user";
 import MyButton from "@/components/global/button";
 import MyInputForm from "@/components/global/inputForm";
 import { staticURL } from "@/configs/app";
@@ -7,6 +8,7 @@ import { handleSetToken } from "@/libs/utils";
 import { schemaLoginForm } from "@/libs/validation";
 import { useCartStore } from "@/stores/carts";
 import { useUserStore } from "@/stores/user";
+import { useUserDetailStore } from "@/stores/userDetail";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -17,6 +19,7 @@ const LoginForm = () => {
   const updateUser = useUserStore((state) => state.updateUser);
   const router = useRouter();
   const updateCart = useCartStore((state) => state.updateAllCarts);
+  const updateUserDetail = useUserDetailStore(state => state.updateUserDetail);
 
   const { control, handleSubmit } = useForm<TLoginForm>({
     mode: "onBlur",
@@ -26,6 +29,14 @@ const LoginForm = () => {
     },
     resolver: yupResolver(schemaLoginForm),
   });
+
+  const mutationGetUserDetail = useMutation({
+    mutationKey: [userAPI.keyGetDetail],
+    mutationFn: (userId: number) => userAPI.getDetail(userId),
+    onSuccess: (res) => {
+      updateUserDetail(res.data)
+    }
+  })
 
   const handleFetchingCart = async (userId: number) => {
     try {
@@ -59,6 +70,7 @@ const LoginForm = () => {
       updateUser(user);
       router.push(staticURL.product);
       handleFetchingCart(user.id);
+      mutationGetUserDetail.mutate(user.id)
     }
   };
 
