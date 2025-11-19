@@ -1,6 +1,5 @@
 import instancePrivacy from "../instancePrivacy";
 
-
 const url = "/carts";
 
 export const cartAPI = {

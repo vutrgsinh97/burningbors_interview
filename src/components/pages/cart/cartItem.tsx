@@ -1,18 +1,19 @@
 import MyIcon from "@/components/global/icon";
-import { getStrPrice } from "@/libs/utils";
+import { cn, getStrPrice } from "@/libs/utils";
 import { Divider, Popover } from "antd";
-import { FC } from "react";
+import React, { FC } from "react";
 import CartProductItem from "./cartProductItem";
-import React from "react";
 
 type TCartItem = {
   item: TCart;
   index: number;
+  isCartPage: boolean
 };
 
-const CartItem: FC<TCartItem> = ({ item, index }) => {
+const CartItem: FC<TCartItem> = ({ item, index, isCartPage }) => {
+
   return (
-    <div className="bg-white p-4 rounded-lg shadow-sm">
+    <div className={cn("bg-white p-4 rounded-lg shadow-sm", !isCartPage && "shadow-none p-0")}>
       <div className="flex justify-between">
         <div className="text-base text-gray-900">
           Cart <span className="font-bold">#{++index}</span>
@@ -42,7 +43,7 @@ const CartItem: FC<TCartItem> = ({ item, index }) => {
       <div>
         {item.products.map((proItem, index) => (
           <React.Fragment key={`${item.id}-${proItem.id}`}>
-            <CartProductItem index={index} item={proItem} cartId={item.id} />
+            <CartProductItem index={index} item={proItem} cartId={item.id} isCartPage={isCartPage}/>
             {index < item.products.length - 1 && <Divider size="small" />}
           </React.Fragment>
         ))}

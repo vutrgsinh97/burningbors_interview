@@ -1,0 +1,10 @@
+@reference "tailwindcss";
+
+
+.box {
+    @apply p-4 rounded-lg bg-white space-y-2;
+
+    &-title {
+        @apply font-semibold text-base mb-6;
+    }
+}

@@ -15,4 +15,5 @@ export const staticURL = {
   product: "/product?limit=20&q=",
   cart: "/cart",
   checkout: "/checkout",
+  afterCheckout: "/afterCheckout"
 };
