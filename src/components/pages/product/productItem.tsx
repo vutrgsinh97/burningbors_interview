@@ -1,12 +1,10 @@
-import MyButton from "@/components/global/button";
 import MyIcon from "@/components/global/icon";
 import MyTag from "@/components/global/tag";
 import { cn, getStrPrice, getStrPriceAfterDiscount } from "@/libs/utils";
 import { Image, Skeleton } from "antd";
-import Link from "next/link";
 import { FC, useState } from "react";
+import AddToCart from "./addToCart";
 import styles from "./product.module.scss";
-import { useLoginToast } from "@/hooks/useShowToastIsLogin";
 
 type IProductItem = {
   item: TProduct;
@@ -50,11 +48,10 @@ const ProductItem: FC<IProductItem> = ({ item, isOrder }) => {
     item.discountPercentage
   );
   const isDiscount = item.discountPercentage > 0;
-  const showLoginToast = useLoginToast({ message: "Login required to order." });
 
   return (
     <div key={item.id} className={styles["item"]}>
-      <Link href={`/product/${item.id}`}>
+      <div>
         <MyImageLoading thumbnail={item.thumbnail} title={item.title} />
         <div className={styles["item-content"]}>
           <div className={styles["item-info"]}>
@@ -86,21 +83,8 @@ const ProductItem: FC<IProductItem> = ({ item, isOrder }) => {
             </div>
           </div>
         </div>
-      </Link>
-      <MyButton
-        type="primary"
-        size="large"
-        disabled={item.stock <= 0}
-        onClick={() => {
-          if (!isOrder) {
-            showLoginToast();
-            return;
-          }
-          console.log(item.title);
-        }}
-      >
-        <span className="uppercase font-bold text-sm">Add to Card</span>
-      </MyButton>
+      </div>
+      <AddToCart item={item} isOrder={isOrder} />
     </div>
   );
 };
