@@ -1,10 +1,11 @@
-import instancePublish from "../instancePublic";
+import instancePrivacy from "../instancePrivacy";
+
 
 const url = "/carts";
 
 export const cartAPI = {
   keyGetCartByUser: `GET ${url}/userId`,
   getCartByUser(userId: number) {
-    return instancePublish.get<TCartResponse>(`${url}/user/${userId}`);
+    return instancePrivacy.get<TCartResponse>(`${url}/user/${userId}`);
   },
 };

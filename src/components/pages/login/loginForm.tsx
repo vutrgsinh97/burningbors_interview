@@ -47,11 +47,11 @@ const LoginForm = () => {
   ) => {
     if (accessToken && refreshToken) {
       try {
-        // const userParse = getJWTDecode(accessToken);
-
         handleSetToken({ token: accessToken, refresh: refreshToken });
-      } catch (err) {
-        toast.error("Failed to decode JWT user data");
+      } catch (_) {
+        toast.error("Failed to decode JWT user data", {
+          position: "top-center",
+        });
       }
     }
 
@@ -70,7 +70,7 @@ const LoginForm = () => {
       handleAfterLogin(accessToken || "", refreshToken || "", user || null);
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(error.message, { position: "top-center" });
     },
   });
 
